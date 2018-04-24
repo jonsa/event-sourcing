@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -17,12 +16,12 @@ use Prooph\EventSourcing\EventStoreIntegration\AggregateRootDecorator;
 
 class ExtendedAggregateRootDecorator extends AggregateRootDecorator
 {
-    public function getAggregateId(): string
+    public function getAggregateId()
     {
         return $this->aggregateId();
     }
 
-    public function doApply(AggregateChanged $event): void
+    public function doApply(AggregateChanged $event)
     {
         $this->apply($event);
     }

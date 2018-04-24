@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing;
 
@@ -25,7 +24,7 @@ class AggregateRootTest extends TestCase
     /**
      * @test
      */
-    public function it_applies_event_by_calling_appropriate_event_handler(): void
+    public function it_applies_event_by_calling_appropriate_event_handler()
     {
         $decorator = AggregateRootDecorator::newInstance();
 
@@ -67,7 +66,7 @@ class AggregateRootTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_no_handler_on_aggregate(): void
+    public function it_throws_exception_when_no_handler_on_aggregate()
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unknown event "' . UserCreated::class . '" applied to user aggregate');
@@ -83,7 +82,7 @@ class AggregateRootTest extends TestCase
     /**
      * @test
      */
-    public function it_reconstructs_itself_from_history(): void
+    public function it_reconstructs_itself_from_history()
     {
         $user = User::nameNew('John');
 
@@ -108,7 +107,7 @@ class AggregateRootTest extends TestCase
     /**
      * @test
      */
-    public function it_clears_pending_events_after_returning_them(): void
+    public function it_clears_pending_events_after_returning_them()
     {
         $user = User::nameNew('John');
 

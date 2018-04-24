@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
@@ -20,12 +19,12 @@ interface AggregateTranslator
     /**
      * @param object $eventSourcedAggregateRoot
      */
-    public function extractAggregateVersion($eventSourcedAggregateRoot): int;
+    public function extractAggregateVersion($eventSourcedAggregateRoot);
 
     /**
      * @param object $eventSourcedAggregateRoot
      */
-    public function extractAggregateId($eventSourcedAggregateRoot): string;
+    public function extractAggregateId($eventSourcedAggregateRoot);
 
     /**
      * @return object reconstructed EventSourcedAggregateRoot
@@ -37,11 +36,11 @@ interface AggregateTranslator
      *
      * @return Message[]
      */
-    public function extractPendingStreamEvents($eventSourcedAggregateRoot): array;
+    public function extractPendingStreamEvents($eventSourcedAggregateRoot);
 
     /**
      * @param object $eventSourcedAggregateRoot
      * @param Iterator $events
      */
-    public function replayStreamEvents($eventSourcedAggregateRoot, Iterator $events): void;
+    public function replayStreamEvents($eventSourcedAggregateRoot, Iterator $events);
 }

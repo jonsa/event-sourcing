@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
@@ -31,7 +30,7 @@ class AggregateType
      *
      * @throws Exception\AggregateTypeException
      */
-    public static function fromAggregateRoot($eventSourcedAggregateRoot): AggregateType
+    public static function fromAggregateRoot($eventSourcedAggregateRoot)
     {
         if (! is_object($eventSourcedAggregateRoot)) {
             throw new Exception\AggregateTypeException(
@@ -55,7 +54,7 @@ class AggregateType
      *
      * @throws Exception\InvalidArgumentException
      */
-    public static function fromAggregateRootClass(string $aggregateRootClass): AggregateType
+    public static function fromAggregateRootClass($aggregateRootClass)
     {
         if (! class_exists($aggregateRootClass)) {
             throw new Exception\InvalidArgumentException(sprintf('Aggregate root class %s can not be found', $aggregateRootClass));
@@ -72,7 +71,7 @@ class AggregateType
      *
      * @throws Exception\InvalidArgumentException
      */
-    public static function fromString(string $aggregateTypeString): AggregateType
+    public static function fromString($aggregateTypeString)
     {
         if (empty($aggregateTypeString)) {
             throw new Exception\InvalidArgumentException('AggregateType must be a non empty string');
@@ -84,7 +83,7 @@ class AggregateType
         return $self;
     }
 
-    public static function fromMapping(array $mapping): AggregateType
+    public static function fromMapping(array $mapping)
     {
         $self = new static();
         $self->mapping = $mapping;
@@ -96,17 +95,17 @@ class AggregateType
     {
     }
 
-    public function mappedClass(): ?string
+    public function mappedClass()
     {
         return empty($this->mapping) ? null : current($this->mapping);
     }
 
-    public function toString(): string
+    public function toString()
     {
         return empty($this->mapping) ? $this->aggregateType : key($this->mapping);
     }
 
-    public function __toString(): string
+    public function __toString()
     {
         return $this->toString();
     }
@@ -116,7 +115,7 @@ class AggregateType
      *
      * @throws Exception\AggregateTypeException
      */
-    public function assert($aggregateRoot): void
+    public function assert($aggregateRoot)
     {
         $otherAggregateType = self::fromAggregateRoot($aggregateRoot);
 
@@ -127,7 +126,7 @@ class AggregateType
         }
     }
 
-    public function equals(AggregateType $other): bool
+    public function equals(AggregateType $other)
     {
         if (! $aggregateTypeString = $this->mappedClass()) {
             $aggregateTypeString = $this->toString();

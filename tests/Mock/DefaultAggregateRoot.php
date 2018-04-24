@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -24,12 +23,12 @@ final class DefaultAggregateRoot implements DefaultAggregateRootContract
      */
     private $version = 0;
 
-    public function getVersion(): int
+    public function getVersion()
     {
         return $this->version;
     }
 
-    public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract
+    public static function reconstituteFromHistory(Iterator $historyEvents)
     {
         $self = new self();
 
@@ -38,12 +37,12 @@ final class DefaultAggregateRoot implements DefaultAggregateRootContract
         return $self;
     }
 
-    public function getHistoryEvents(): array
+    public function getHistoryEvents()
     {
         return $this->historyEvents;
     }
 
-    public function getId(): string
+    public function getId()
     {
         // not required for this mock
     }
@@ -51,12 +50,12 @@ final class DefaultAggregateRoot implements DefaultAggregateRootContract
     /**
      * @return Message[]
      */
-    public function popRecordedEvents(): array
+    public function popRecordedEvents()
     {
         // not required for this mock
     }
 
-    public function replay($event): void
+    public function replay($event)
     {
         // not required for this mock
     }

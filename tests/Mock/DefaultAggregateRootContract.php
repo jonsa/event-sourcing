@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -17,16 +16,16 @@ use Prooph\Common\Messaging\Message;
 
 interface DefaultAggregateRootContract
 {
-    public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract;
+    public static function reconstituteFromHistory(Iterator $historyEvents);
 
-    public function getVersion(): int;
+    public function getVersion();
 
-    public function getId(): string;
+    public function getId();
 
     /**
      * @return Message[]
      */
-    public function popRecordedEvents(): array;
+    public function popRecordedEvents();
 
-    public function replay($event): void;
+    public function replay($event);
 }

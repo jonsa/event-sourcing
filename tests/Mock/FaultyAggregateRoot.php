@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -17,27 +16,27 @@ use Prooph\Common\Messaging\Message;
 
 final class FaultyAggregateRoot implements DefaultAggregateRootContract
 {
-    public function getVersion(): int
+    public function getVersion()
     {
         //faulty return
         return 1;
     }
 
-    public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract
+    public static function reconstituteFromHistory(Iterator $historyEvents)
     {
         //faulty method
         return new class() implements DefaultAggregateRootContract {
-            public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract
+            public static function reconstituteFromHistory(Iterator $historyEvents)
             {
                 return new self();
             }
 
-            public function getVersion(): int
+            public function getVersion()
             {
                 return 1;
             }
 
-            public function getId(): string
+            public function getId()
             {
                 return 'id';
             }
@@ -45,7 +44,7 @@ final class FaultyAggregateRoot implements DefaultAggregateRootContract
             /**
              * @return Message[]
              */
-            public function popRecordedEvents(): array
+            public function popRecordedEvents()
             {
                 return [];
             }
@@ -53,13 +52,13 @@ final class FaultyAggregateRoot implements DefaultAggregateRootContract
             /**
              * @param $event
              */
-            public function replay($event): void
+            public function replay($event)
             {
             }
         };
     }
 
-    public function getId(): string
+    public function getId()
     {
         //faulty method
         return '0';
@@ -68,13 +67,13 @@ final class FaultyAggregateRoot implements DefaultAggregateRootContract
     /**
      * @return Message[]
      */
-    public function popRecordedEvents(): array
+    public function popRecordedEvents()
     {
         //faulty method
         return [];
     }
 
-    public function replay($event): void
+    public function replay($event)
     {
     }
 }

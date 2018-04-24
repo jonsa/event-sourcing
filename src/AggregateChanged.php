@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing;
 
@@ -25,22 +24,22 @@ class AggregateChanged extends DomainEvent
     /**
      * @return static
      */
-    public static function occur(string $aggregateId, array $payload = []): self
+    public static function occur($aggregateId, array $payload = [])
     {
         return new static($aggregateId, $payload);
     }
 
-    protected function __construct(string $aggregateId, array $payload, array $metadata = [])
+    protected function __construct($aggregateId, array $payload, array $metadata = [])
     {
         //Metadata needs to be set before setAggregateId and setVersion is called
         $this->metadata = $metadata;
         $this->setAggregateId($aggregateId);
-        $this->setVersion($metadata['_aggregate_version'] ?? 1);
+        $this->setVersion(isset($metadata['_aggregate_version']) ? $metadata['_aggregate_version'] : 1);
         $this->setPayload($payload);
         $this->init();
     }
 
-    public function aggregateId(): string
+    public function aggregateId()
     {
         return $this->metadata['_aggregate_id'];
     }
@@ -52,17 +51,17 @@ class AggregateChanged extends DomainEvent
      * The payload is normally passed to json_encode to persist the message or
      * push it into a message queue.
      */
-    public function payload(): array
+    public function payload()
     {
         return $this->payload;
     }
 
-    public function version(): int
+    public function version()
     {
         return $this->metadata['_aggregate_version'];
     }
 
-    public function withVersion(int $version): AggregateChanged
+    public function withVersion($version)
     {
         $self = clone $this;
         $self->setVersion($version);
@@ -70,14 +69,14 @@ class AggregateChanged extends DomainEvent
         return $self;
     }
 
-    protected function setAggregateId(string $aggregateId): void
+    protected function setAggregateId($aggregateId)
     {
         Assertion::notEmpty($aggregateId);
 
         $this->metadata['_aggregate_id'] = $aggregateId;
     }
 
-    protected function setVersion(int $version): void
+    protected function setVersion($version)
     {
         $this->metadata['_aggregate_version'] = $version;
     }
@@ -85,7 +84,7 @@ class AggregateChanged extends DomainEvent
     /**
      * This method is called when message is instantiated named constructor fromArray
      */
-    protected function setPayload(array $payload): void
+    protected function setPayload(array $payload)
     {
         $this->payload = $payload;
     }

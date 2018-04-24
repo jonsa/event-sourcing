@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -16,52 +15,52 @@ use Iterator;
 
 final class FaultyAggregateRoot2
 {
-    public function getVersion(): int
+    public function getVersion()
     {
         //faulty return
         return 1;
     }
 
-    public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract
+    public static function reconstituteFromHistory(Iterator $historyEvents)
     {
         //faulty method
         return new class() implements DefaultAggregateRootContract {
-            public static function reconstituteFromHistory(Iterator $historyEvents): DefaultAggregateRootContract
+            public static function reconstituteFromHistory(Iterator $historyEvents)
             {
                 return new self();
             }
 
-            public function getVersion(): int
+            public function getVersion()
             {
                 return 1;
             }
 
-            public function getId(): string
+            public function getId()
             {
                 return 'id';
             }
 
-            public function popRecordedEvents(): void
+            public function popRecordedEvents()
             {
             }
 
-            public function replay($event): void
+            public function replay($event)
             {
             }
         };
     }
 
-    public function getId(): string
+    public function getId()
     {
         //faulty method
         return '0';
     }
 
-    public function popRecordedEvents(): void
+    public function popRecordedEvents()
     {
     }
 
-    public function replay($event): void
+    public function replay($event)
     {
     }
 }

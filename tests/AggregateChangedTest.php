@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing;
 
@@ -22,7 +21,7 @@ class AggregateChangedTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_new_uuid_after_construct(): void
+    public function it_has_a_new_uuid_after_construct()
     {
         $event = AggregateChanged::occur('1', []);
 
@@ -32,7 +31,7 @@ class AggregateChangedTest extends TestCase
     /**
      * @test
      */
-    public function it_references_an_aggregate(): void
+    public function it_references_an_aggregate()
     {
         $event = AggregateChanged::occur('1', []);
 
@@ -42,7 +41,7 @@ class AggregateChangedTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_occurred_on_datetime_after_construct(): void
+    public function it_has_an_occurred_on_datetime_after_construct()
     {
         $event = AggregateChanged::occur('1', []);
 
@@ -52,7 +51,7 @@ class AggregateChangedTest extends TestCase
     /**
      * @test
      */
-    public function it_has_assigned_payload_after_construct(): void
+    public function it_has_assigned_payload_after_construct()
     {
         $payload = ['test payload'];
 
@@ -64,7 +63,7 @@ class AggregateChangedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_track_aggregate_version_but_is_immutable(): void
+    public function it_can_track_aggregate_version_but_is_immutable()
     {
         $orgEvent = AggregateChanged::occur('1', ['key' => 'value']);
 

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace {
     require_once __DIR__ . '/../vendor/autoload.php';
@@ -35,7 +34,7 @@ namespace My\Model {
         /**
          * ARs should be created via static factory methods
          */
-        public static function nameNew(string $username): User
+        public static function nameNew($username)
         {
             //Perform assertions before raising a event
             Assertion::notEmpty($username);
@@ -52,17 +51,17 @@ namespace My\Model {
             return $instance;
         }
 
-        public function userId(): Uuid
+        public function userId()
         {
             return $this->uuid;
         }
 
-        public function name(): string
+        public function name()
         {
             return $this->name;
         }
 
-        public function changeName(string $newName): void
+        public function changeName($newName)
         {
             Assertion::notEmpty($newName);
 
@@ -77,12 +76,12 @@ namespace My\Model {
         /**
          * Every AR needs a hidden method that returns the identifier of the AR as a string
          */
-        protected function aggregateId(): string
+        protected function aggregateId()
         {
             return $this->uuid->toString();
         }
 
-        protected function apply(AggregateChanged $event): void
+        protected function apply(AggregateChanged $event)
         {
             switch (get_class($event)) {
                 case UserWasCreated::class:
@@ -102,7 +101,7 @@ namespace My\Model {
      */
     class UserWasCreated extends AggregateChanged
     {
-        public function username(): string
+        public function username()
         {
             return $this->payload['name'];
         }
@@ -113,12 +112,12 @@ namespace My\Model {
      */
     class UserWasRenamed extends AggregateChanged
     {
-        public function newName(): string
+        public function newName()
         {
             return $this->payload['new_name'];
         }
 
-        public function oldName(): string
+        public function oldName()
         {
             return $this->payload['old_name'];
         }
@@ -129,9 +128,9 @@ namespace My\Model {
      */
     interface UserRepository
     {
-        public function save(User $user): void;
+        public function save(User $user);
 
-        public function get(Uuid $uuid): ?User;
+        public function get(Uuid $uuid);
     }
 }
 
@@ -159,12 +158,12 @@ namespace My\Infrastructure {
             );
         }
 
-        public function save(User $user): void
+        public function save(User $user)
         {
             $this->saveAggregateRoot($user);
         }
 
-        public function get(Uuid $uuid): ?User
+        public function get(Uuid $uuid)
         {
             return $this->getAggregateRoot($uuid->toString());
         }
@@ -197,7 +196,7 @@ namespace {
     //Before we save let's attach a listener to check that the UserWasCreated event is recorded
     $eventStore->attach(
         TransactionalActionEventEmitterEventStore::EVENT_CREATE,
-        function (ActionEvent $event): void {
+        function (ActionEvent $event) {
             foreach ($event->getParam('stream')->streamEvents() as $streamEvent) {
                 echo sprintf(
                     'Event with name %s was recorded. It occurred on %s UTC /// ',
@@ -214,7 +213,7 @@ namespace {
     //Let's make sure the transaction is written
     $eventStore->attach(
         TransactionalActionEventEmitterEventStore::EVENT_COMMIT,
-        function (ActionEvent $event): void {
+        function (ActionEvent $event) {
             echo 'Transaction commited' . PHP_EOL;
         },
         -1000
@@ -239,7 +238,7 @@ namespace {
     //Before we save let's attach a listener again on appendTo to check that the UserWasRenamed event is recorded
     $eventStore->attach(
         TransactionalActionEventEmitterEventStore::EVENT_APPEND_TO,
-        function (ActionEvent $event): void {
+        function (ActionEvent $event) {
             foreach ($event->getParam('streamEvents') as $streamEvent) {
                 echo sprintf(
                         'Event with name %s was recorded. It occurred on %s UTC /// ',

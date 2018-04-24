@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\EventStoreIntegration;
 
@@ -20,12 +19,12 @@ use RuntimeException;
 
 class AggregateRootDecorator extends AggregateRoot
 {
-    public static function newInstance(): self
+    public static function newInstance()
     {
         return new static();
     }
 
-    public function extractAggregateVersion(AggregateRoot $anAggregateRoot): int
+    public function extractAggregateVersion(AggregateRoot $anAggregateRoot)
     {
         return $anAggregateRoot->version;
     }
@@ -35,12 +34,12 @@ class AggregateRootDecorator extends AggregateRoot
      *
      * @return \Prooph\EventSourcing\AggregateChanged[]
      */
-    public function extractRecordedEvents(AggregateRoot $anAggregateRoot): array
+    public function extractRecordedEvents(AggregateRoot $anAggregateRoot)
     {
         return $anAggregateRoot->popRecordedEvents();
     }
 
-    public function extractAggregateId(AggregateRoot $anAggregateRoot): string
+    public function extractAggregateId(AggregateRoot $anAggregateRoot)
     {
         return $anAggregateRoot->aggregateId();
     }
@@ -48,7 +47,7 @@ class AggregateRootDecorator extends AggregateRoot
     /**
      * @throws RuntimeException
      */
-    public function fromHistory($arClass, Iterator $aggregateChangedEvents): AggregateRoot
+    public function fromHistory($arClass, Iterator $aggregateChangedEvents)
     {
         if (! class_exists($arClass)) {
             throw new RuntimeException(
@@ -59,7 +58,7 @@ class AggregateRootDecorator extends AggregateRoot
         return $arClass::reconstituteFromHistory($aggregateChangedEvents);
     }
 
-    public function replayStreamEvents(AggregateRoot $aggregateRoot, Iterator $events): void
+    public function replayStreamEvents(AggregateRoot $aggregateRoot, Iterator $events)
     {
         $aggregateRoot->replay($events);
     }
@@ -67,12 +66,12 @@ class AggregateRootDecorator extends AggregateRoot
     /**
      * @throws BadMethodCallException
      */
-    protected function aggregateId(): string
+    protected function aggregateId()
     {
         throw new BadMethodCallException('The AggregateRootDecorator does not have an id');
     }
 
-    protected function apply(AggregateChanged $e): void
+    protected function apply(AggregateChanged $e)
     {
     }
 }

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Container\Aggregate;
 
@@ -47,7 +46,7 @@ final class AggregateRepositoryFactory implements RequiresConfigId, RequiresMand
      *
      * @throws InvalidArgumentException
      */
-    public static function __callStatic(string $name, array $arguments): AggregateRepository
+    public static function __callStatic($name, array $arguments)
     {
         if (! isset($arguments[0]) || ! $arguments[0] instanceof ContainerInterface) {
             throw new InvalidArgumentException(
@@ -58,7 +57,7 @@ final class AggregateRepositoryFactory implements RequiresConfigId, RequiresMand
         return (new static($name))->__invoke($arguments[0]);
     }
 
-    public function __construct(string $configId)
+    public function __construct($configId)
     {
         $this->configId = $configId;
     }
@@ -66,7 +65,7 @@ final class AggregateRepositoryFactory implements RequiresConfigId, RequiresMand
     /**
      * @throws ConfigurationException
      */
-    public function __invoke(ContainerInterface $container): AggregateRepository
+    public function __invoke(ContainerInterface $container)
     {
         $config = $container->get('config');
         $config = $this->options($config, $this->configId);
@@ -95,7 +94,7 @@ final class AggregateRepositoryFactory implements RequiresConfigId, RequiresMand
 
         $streamName = isset($config['stream_name']) ? new StreamName($config['stream_name']) : null;
 
-        $oneStreamPerAggregate = (bool) ($config['one_stream_per_aggregate'] ?? false);
+        $oneStreamPerAggregate = (bool) (isset($config['one_stream_per_aggregate']) ? $config['one_stream_per_aggregate'] : false);
 
         return new $repositoryClass(
             $eventStore,
@@ -107,12 +106,12 @@ final class AggregateRepositoryFactory implements RequiresConfigId, RequiresMand
         );
     }
 
-    public function dimensions(): iterable
+    public function dimensions()
     {
         return ['prooph', 'event_sourcing', 'aggregate_repository'];
     }
 
-    public function mandatoryOptions(): iterable
+    public function mandatoryOptions()
     {
         return [
             'repository_class',

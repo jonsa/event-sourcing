@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
@@ -65,7 +64,7 @@ class AggregateRepository
         AggregateTranslator $aggregateTranslator,
         SnapshotStore $snapshotStore = null,
         StreamName $streamName = null,
-        bool $oneStreamPerAggregate = false
+        $oneStreamPerAggregate = false
     ) {
         $this->eventStore = $eventStore;
         $this->aggregateType = $aggregateType;
@@ -78,7 +77,7 @@ class AggregateRepository
     /**
      * @param object $eventSourcedAggregateRoot
      */
-    public function saveAggregateRoot($eventSourcedAggregateRoot): void
+    public function saveAggregateRoot($eventSourcedAggregateRoot)
     {
         $this->assertAggregateType($eventSourcedAggregateRoot);
 
@@ -124,7 +123,7 @@ class AggregateRepository
      *
      * @return null|object
      */
-    public function getAggregateRoot(string $aggregateId)
+    public function getAggregateRoot($aggregateId)
     {
         if (isset($this->identityMap[$aggregateId])) {
             return $this->identityMap[$aggregateId];
@@ -187,7 +186,7 @@ class AggregateRepository
     /**
      * @param object $aggregateRoot
      */
-    public function extractAggregateVersion($aggregateRoot): int
+    public function extractAggregateVersion($aggregateRoot)
     {
         return $this->aggregateTranslator->extractAggregateVersion($aggregateRoot);
     }
@@ -195,12 +194,12 @@ class AggregateRepository
     /**
      * Empties the identity map. Use this if you load thousands of aggregates to free memory e.g. modulo 500.
      */
-    public function clearIdentityMap(): void
+    public function clearIdentityMap()
     {
         $this->identityMap = [];
     }
 
-    protected function isFirstEvent(Message $message): bool
+    protected function isFirstEvent(Message $message)
     {
         return 1 === $message->metadata()['_aggregate_version'];
     }
@@ -208,7 +207,7 @@ class AggregateRepository
     /**
      * @return null|object
      */
-    protected function loadFromSnapshotStore(string $aggregateId)
+    protected function loadFromSnapshotStore($aggregateId)
     {
         $snapshot = $this->snapshotStore->get($this->aggregateType->toString(), $aggregateId);
 
@@ -281,7 +280,7 @@ class AggregateRepository
      * Default stream name generation.
      * Override this method in an extending repository to provide a custom name
      */
-    protected function determineStreamName(string $aggregateId): StreamName
+    protected function determineStreamName($aggregateId)
     {
         if ($this->oneStreamPerAggregate) {
             if (null === $this->streamName) {
@@ -304,7 +303,7 @@ class AggregateRepository
      * Add aggregate_id and aggregate_type as metadata to $domainEvent
      * Override this method in an extending repository to add more or different metadata.
      */
-    protected function enrichEventMetadata(Message $domainEvent, string $aggregateId): Message
+    protected function enrichEventMetadata(Message $domainEvent, $aggregateId)
     {
         $domainEvent = $domainEvent->withAddedMetadata('_aggregate_id', $aggregateId);
         $domainEvent = $domainEvent->withAddedMetadata('_aggregate_type', $this->aggregateType->toString());

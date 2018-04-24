@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -21,32 +20,32 @@ use Prooph\SnapshotStore\SnapshotStore;
 
 final class RepositoryMock extends AggregateRepository
 {
-    public function accessEventStore(): EventStore
+    public function accessEventStore()
     {
         return $this->eventStore;
     }
 
-    public function accessAggregateType(): AggregateType
+    public function accessAggregateType()
     {
         return $this->aggregateType;
     }
 
-    public function accessAggregateTranslator(): AggregateTranslator
+    public function accessAggregateTranslator()
     {
         return $this->aggregateTranslator;
     }
 
-    public function accessDeterminedStreamName(string $aggregateId = null): StreamName
+    public function accessDeterminedStreamName($aggregateId = null)
     {
         return $this->determineStreamName($aggregateId);
     }
 
-    public function accessOneStreamPerAggregateFlag(): bool
+    public function accessOneStreamPerAggregateFlag()
     {
         return $this->oneStreamPerAggregate;
     }
 
-    public function accessSnapshotStore(): SnapshotStore
+    public function accessSnapshotStore()
     {
         return $this->snapshotStore;
     }

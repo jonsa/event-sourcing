@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -29,7 +28,7 @@ class BrokenUser extends AggregateRoot
      */
     protected $name;
 
-    public static function nameNew(string $name): self
+    public static function nameNew($name)
     {
         $id = Uuid::uuid4()->toString();
         $instance = new self();
@@ -39,17 +38,17 @@ class BrokenUser extends AggregateRoot
         return $instance;
     }
 
-    public static function fromHistory(array $historyEvents): self
+    public static function fromHistory(array $historyEvents)
     {
         return self::reconstituteFromHistory($historyEvents);
     }
 
-    public function id(): string
+    public function id()
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function name()
     {
         return $this->name;
     }
@@ -57,7 +56,7 @@ class BrokenUser extends AggregateRoot
     /**
      * @return \Prooph\EventSourcing\AggregateChanged[]
      */
-    public function accessRecordedEvents(): array
+    public function accessRecordedEvents()
     {
         return $this->popRecordedEvents();
     }
@@ -65,12 +64,12 @@ class BrokenUser extends AggregateRoot
     /**
      * @return string representation of the unique identifier of the aggregate root
      */
-    protected function aggregateId(): string
+    protected function aggregateId()
     {
         return $this->id();
     }
 
-    protected function apply(AggregateChanged $e): void
+    protected function apply(AggregateChanged $e)
     {
         switch (get_class($e)) {
             default:

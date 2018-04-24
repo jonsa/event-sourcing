@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Aggregate;
 
@@ -46,7 +45,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
      */
     private $snapshotStore;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         parent::setUp();
 
@@ -62,7 +61,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_adds_a_new_aggregate(): void
+    public function it_adds_a_new_aggregate()
     {
         $user = User::nameNew('John Doe');
 
@@ -82,7 +81,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_removes_aggregate_from_identity_map_when_save_is_called(): void
+    public function it_removes_aggregate_from_identity_map_when_save_is_called()
     {
         $user = User::nameNew('John Doe');
 
@@ -117,7 +116,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
      * @test
      * Test for https://github.com/prooph/event-store/issues/99
      */
-    public function it_does_not_interfere_with_other_aggregate_roots_in_pending_events_index(): void
+    public function it_does_not_interfere_with_other_aggregate_roots_in_pending_events_index()
     {
         $user = User::nameNew('John Doe');
 
@@ -149,7 +148,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_asserts_correct_aggregate_type(): void
+    public function it_asserts_correct_aggregate_type()
     {
         $this->expectException(AggregateTypeException::class);
         $this->expectExceptionMessage('Aggregate root must be an object but type of string given');
@@ -160,7 +159,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_returns_early_on_get_aggregate_root_when_there_are_no_stream_events(): void
+    public function it_returns_early_on_get_aggregate_root_when_there_are_no_stream_events()
     {
         $this->assertNull($this->repository->getAggregateRoot('something'));
     }
@@ -168,7 +167,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_loads_the_entire_stream_if_one_stream_per_aggregate_is_enabled(): void
+    public function it_loads_the_entire_stream_if_one_stream_per_aggregate_is_enabled()
     {
         $eventStore = $this->prophesize(ActionEventEmitterEventStore::class);
         $eventStore
@@ -196,7 +195,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_snapshot_store(): void
+    public function it_uses_snapshot_store()
     {
         $this->prepareSnapshotStoreAggregateRepository();
 
@@ -240,7 +239,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_snapshot_store_with_one_stream_per_aggregate(): void
+    public function it_uses_snapshot_store_with_one_stream_per_aggregate()
     {
         $this->snapshotStore = new InMemorySnapshotStore();
 
@@ -293,7 +292,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_snapshot_store_while_snapshot_store_is_empty(): void
+    public function it_uses_snapshot_store_while_snapshot_store_is_empty()
     {
         $this->prepareSnapshotStoreAggregateRepository();
 
@@ -326,7 +325,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_snapshot_store_and_applies_pending_events(): void
+    public function it_uses_snapshot_store_and_applies_pending_events()
     {
         $this->prepareSnapshotStoreAggregateRepository();
 
@@ -376,7 +375,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_snapshot_store_and_applies_pending_events_when_snapshot_store_found_nothing(): void
+    public function it_uses_snapshot_store_and_applies_pending_events_when_snapshot_store_found_nothing()
     {
         $this->prepareSnapshotStoreAggregateRepository();
 
@@ -414,7 +413,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
         $this->assertEquals(2, $this->repository->extractAggregateVersion($fetchedUser));
     }
 
-    protected function prepareSnapshotStoreAggregateRepository(): void
+    protected function prepareSnapshotStoreAggregateRepository()
     {
         parent::setUp();
 
@@ -434,7 +433,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
      * @test
      * Test for https://github.com/prooph/event-store/issues/179
      */
-    public function it_tracks_changes_of_aggregate_but_returns_a_same_instance_within_transaction(): void
+    public function it_tracks_changes_of_aggregate_but_returns_a_same_instance_within_transaction()
     {
         $user = User::nameNew('John Doe');
 
@@ -458,7 +457,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_clears_identity_map_manually(): void
+    public function it_clears_identity_map_manually()
     {
         $user = User::nameNew('John Doe');
 
@@ -482,7 +481,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_provided_stream_name(): void
+    public function it_uses_provided_stream_name()
     {
         $streamName = $this->prophesize(StreamName::class);
         $streamName->toString()->willReturn('foo')->shouldBeCalled();
@@ -507,7 +506,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
      * @test
      * Test for https://github.com/prooph/event-sourcing/issues/42
      */
-    public function it_does_not_throw_an_exception_if_no_pending_event_is_present(): void
+    public function it_does_not_throw_an_exception_if_no_pending_event_is_present()
     {
         $user = User::nameNew('John Doe');
         $this->assertNull($this->repository->saveAggregateRoot($user));
@@ -517,7 +516,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_uses_custom_aggregate_type_names(): void
+    public function it_uses_custom_aggregate_type_names()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,
@@ -543,7 +542,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_no_stream_found(): void
+    public function it_returns_nothing_when_no_stream_found()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,
@@ -560,7 +559,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_no_stream_found_using_one_stream_per_aggregate(): void
+    public function it_returns_nothing_when_no_stream_found_using_one_stream_per_aggregate()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,
@@ -577,7 +576,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_no_stream_found_using_snapshot_store(): void
+    public function it_returns_nothing_when_no_stream_found_using_snapshot_store()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,
@@ -594,7 +593,7 @@ class AggregateRepositoryTest extends ActionEventEmitterEventStoreTestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_no_stream_found_using_one_stream_per_aggregate_and_snapshot_store(): void
+    public function it_returns_nothing_when_no_stream_found_using_one_stream_per_aggregate_and_snapshot_store()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,

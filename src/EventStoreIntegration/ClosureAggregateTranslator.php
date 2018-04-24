@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\EventStoreIntegration;
 
@@ -31,15 +30,16 @@ final class ClosureAggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return int
      */
-    public function extractAggregateVersion($eventSourcedAggregateRoot): int
+    public function extractAggregateVersion($eventSourcedAggregateRoot)
     {
         if (null === $this->versionExtractor) {
-            $this->versionExtractor = function (): int {
+            $this->versionExtractor = function () {
                 return $this->version;
             };
         }
 
-        return $this->versionExtractor->call($eventSourcedAggregateRoot);
+        $closure = $this->versionExtractor->bindTo($eventSourcedAggregateRoot, $eventSourcedAggregateRoot);
+        return $closure();
     }
 
     /**
@@ -47,15 +47,16 @@ final class ClosureAggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return string
      */
-    public function extractAggregateId($anEventSourcedAggregateRoot): string
+    public function extractAggregateId($anEventSourcedAggregateRoot)
     {
         if (null === $this->aggregateIdExtractor) {
-            $this->aggregateIdExtractor = function (): string {
+            $this->aggregateIdExtractor = function () {
                 return $this->aggregateId();
             };
         }
 
-        return $this->aggregateIdExtractor->call($anEventSourcedAggregateRoot);
+        $closure = $this->aggregateIdExtractor->bindTo($anEventSourcedAggregateRoot, $anEventSourcedAggregateRoot);
+        return $closure();
     }
 
     /**
@@ -80,7 +81,9 @@ final class ClosureAggregateTranslator implements EventStoreAggregateTranslator
             );
         }
 
-        return ($this->aggregateReconstructor->bindTo(null, $arClass))($historyEvents);
+        $closure = $this->aggregateReconstructor->bindTo(null, $arClass);
+
+        return $closure($historyEvents);
     }
 
     /**
@@ -88,15 +91,16 @@ final class ClosureAggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return Message[]
      */
-    public function extractPendingStreamEvents($anEventSourcedAggregateRoot): array
+    public function extractPendingStreamEvents($anEventSourcedAggregateRoot)
     {
         if (null === $this->pendingEventsExtractor) {
-            $this->pendingEventsExtractor = function (): array {
+            $this->pendingEventsExtractor = function () {
                 return $this->popRecordedEvents();
             };
         }
 
-        return $this->pendingEventsExtractor->call($anEventSourcedAggregateRoot);
+        $closure = $this->pendingEventsExtractor->bindTo($anEventSourcedAggregateRoot, $anEventSourcedAggregateRoot);
+        return $closure();
     }
 
     /**
@@ -105,13 +109,15 @@ final class ClosureAggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return void
      */
-    public function replayStreamEvents($anEventSourcedAggregateRoot, Iterator $events): void
+    public function replayStreamEvents($anEventSourcedAggregateRoot, Iterator $events)
     {
         if (null === $this->replayStreamEvents) {
-            $this->replayStreamEvents = function ($events): void {
+            $this->replayStreamEvents = function ($events) {
                 $this->replay($events);
             };
         }
-        $this->replayStreamEvents->call($anEventSourcedAggregateRoot, $events);
+
+        $closure = $this->replayStreamEvents->bindTo($anEventSourcedAggregateRoot, $anEventSourcedAggregateRoot);
+        $closure($events);
     }
 }

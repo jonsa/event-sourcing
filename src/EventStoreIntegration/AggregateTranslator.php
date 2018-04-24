@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\EventStoreIntegration;
 
@@ -29,7 +28,7 @@ final class AggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return int
      */
-    public function extractAggregateVersion($eventSourcedAggregateRoot): int
+    public function extractAggregateVersion($eventSourcedAggregateRoot)
     {
         return $this->getAggregateRootDecorator()->extractAggregateVersion($eventSourcedAggregateRoot);
     }
@@ -39,7 +38,7 @@ final class AggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return string
      */
-    public function extractAggregateId($anEventSourcedAggregateRoot): string
+    public function extractAggregateId($anEventSourcedAggregateRoot)
     {
         return $this->getAggregateRootDecorator()->extractAggregateId($anEventSourcedAggregateRoot);
     }
@@ -65,7 +64,7 @@ final class AggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return Message[]
      */
-    public function extractPendingStreamEvents($anEventSourcedAggregateRoot): array
+    public function extractPendingStreamEvents($anEventSourcedAggregateRoot)
     {
         return $this->getAggregateRootDecorator()->extractRecordedEvents($anEventSourcedAggregateRoot);
     }
@@ -76,12 +75,12 @@ final class AggregateTranslator implements EventStoreAggregateTranslator
      *
      * @return void
      */
-    public function replayStreamEvents($anEventSourcedAggregateRoot, Iterator $events): void
+    public function replayStreamEvents($anEventSourcedAggregateRoot, Iterator $events)
     {
         $this->getAggregateRootDecorator()->replayStreamEvents($anEventSourcedAggregateRoot, $events);
     }
 
-    public function getAggregateRootDecorator(): AggregateRootDecorator
+    public function getAggregateRootDecorator()
     {
         if (null === $this->aggregateRootDecorator) {
             $this->aggregateRootDecorator = AggregateRootDecorator::newInstance();
@@ -90,7 +89,7 @@ final class AggregateTranslator implements EventStoreAggregateTranslator
         return $this->aggregateRootDecorator;
     }
 
-    public function setAggregateRootDecorator(AggregateRootDecorator $anAggregateRootDecorator): void
+    public function setAggregateRootDecorator(AggregateRootDecorator $anAggregateRootDecorator)
     {
         $this->aggregateRootDecorator = $anAggregateRootDecorator;
     }

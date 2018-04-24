@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
@@ -28,7 +27,7 @@ trait EventSourcedTrait
     /**
      * @throws RuntimeException
      */
-    protected static function reconstituteFromHistory(Iterator $historyEvents): self
+    protected static function reconstituteFromHistory(Iterator $historyEvents)
     {
         $instance = new static();
         $instance->replay($historyEvents);
@@ -41,7 +40,7 @@ trait EventSourcedTrait
      *
      * @throws RuntimeException
      */
-    protected function replay(Iterator $historyEvents): void
+    protected function replay(Iterator $historyEvents)
     {
         foreach ($historyEvents as $pastEvent) {
             /** @var AggregateChanged $pastEvent */
@@ -51,10 +50,10 @@ trait EventSourcedTrait
         }
     }
 
-    abstract protected function aggregateId(): string;
+    abstract protected function aggregateId();
 
     /**
      * Apply given event
      */
-    abstract protected function apply(AggregateChanged $event): void;
+    abstract protected function apply(AggregateChanged $event);
 }

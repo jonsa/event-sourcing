@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\EventStoreIntegration;
 
@@ -37,7 +36,7 @@ class AggregateTranslatorTest extends TestCase
      */
     protected $repository;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->eventStore = new InMemoryEventStore(new ProophActionEventEmitter());
 
@@ -53,7 +52,7 @@ class AggregateTranslatorTest extends TestCase
     /**
      * @test
      */
-    public function it_translates_aggregate_back_and_forth(): User
+    public function it_translates_aggregate_back_and_forth()
     {
         $this->eventStore->beginTransaction();
 
@@ -88,7 +87,7 @@ class AggregateTranslatorTest extends TestCase
      * @depends it_translates_aggregate_back_and_forth
      * @param User $loadedUser
      */
-    public function it_extracts_version(User $loadedUser): void
+    public function it_extracts_version(User $loadedUser)
     {
         $translator = new AggregateTranslator();
         $this->assertEquals(2, $translator->extractAggregateVersion($loadedUser));
@@ -99,7 +98,7 @@ class AggregateTranslatorTest extends TestCase
      * @depends it_translates_aggregate_back_and_forth
      * @param User $loadedUser
      */
-    public function it_applies_stream_events(User $loadedUser): void
+    public function it_applies_stream_events(User $loadedUser)
     {
         $newName = 'Jane Doe';
 
@@ -114,7 +113,7 @@ class AggregateTranslatorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_use_custom_aggregate_root_decorator(): void
+    public function it_can_use_custom_aggregate_root_decorator()
     {
         $mock = $this->createMock(AggregateRootDecorator::class);
 
@@ -124,7 +123,7 @@ class AggregateTranslatorTest extends TestCase
         $this->assertSame($mock, $translator->getAggregateRootDecorator());
     }
 
-    protected function resetRepository(): void
+    protected function resetRepository()
     {
         $this->repository = new AggregateRepository(
             $this->eventStore,

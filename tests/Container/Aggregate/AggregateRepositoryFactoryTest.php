@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Container\Aggregate;
 
@@ -27,7 +26,7 @@ class AggregateRepositoryFactoryTest extends ActionEventEmitterEventStoreTestCas
     /**
      * @test
      */
-    public function it_creates_an_aggregate_from_static_call(): void
+    public function it_creates_an_aggregate_from_static_call()
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container->has('config')->willReturn(true);
@@ -57,7 +56,7 @@ class AggregateRepositoryFactoryTest extends ActionEventEmitterEventStoreTestCas
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_without_container_on_static_call(): void
+    public function it_throws_invalid_argument_exception_without_container_on_static_call()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The first argument must be of type Psr\Container\ContainerInterface');
@@ -68,7 +67,7 @@ class AggregateRepositoryFactoryTest extends ActionEventEmitterEventStoreTestCas
     /**
      * @test
      */
-    public function it_throws_exception_when_unknown_repository_class_given(): void
+    public function it_throws_exception_when_unknown_repository_class_given()
     {
         $this->expectException(ConfigurationException::class);
 
@@ -95,7 +94,7 @@ class AggregateRepositoryFactoryTest extends ActionEventEmitterEventStoreTestCas
     /**
      * @test
      */
-    public function it_throws_exception_when_invalid_repository_class_given(): void
+    public function it_throws_exception_when_invalid_repository_class_given()
     {
         $this->expectException(ConfigurationException::class);
 
@@ -122,7 +121,7 @@ class AggregateRepositoryFactoryTest extends ActionEventEmitterEventStoreTestCas
     /**
      * @test
      */
-    public function it_uses_given_aggregate_type_mapping(): void
+    public function it_uses_given_aggregate_type_mapping()
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container->has('config')->willReturn(true);

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace ProophTest\EventSourcing\Mock;
 
@@ -16,12 +15,12 @@ use Prooph\EventSourcing\AggregateChanged;
 
 class UserCreated extends AggregateChanged
 {
-    public function userId(): string
+    public function userId()
     {
         return $this->payload['id'];
     }
 
-    public function name(): string
+    public function name()
     {
         return $this->payload['name'];
     }

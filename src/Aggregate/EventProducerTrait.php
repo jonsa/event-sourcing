@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
@@ -35,7 +34,7 @@ trait EventProducerTrait
      *
      * @return AggregateChanged[]
      */
-    protected function popRecordedEvents(): array
+    protected function popRecordedEvents()
     {
         $pendingEvents = $this->recordedEvents;
 
@@ -47,7 +46,7 @@ trait EventProducerTrait
     /**
      * Record an aggregate changed event
      */
-    protected function recordThat(AggregateChanged $event): void
+    protected function recordThat(AggregateChanged $event)
     {
         $this->version += 1;
 
@@ -56,10 +55,10 @@ trait EventProducerTrait
         $this->apply($event);
     }
 
-    abstract protected function aggregateId(): string;
+    abstract protected function aggregateId();
 
     /**
      * Apply given event
      */
-    abstract protected function apply(AggregateChanged $event): void;
+    abstract protected function apply(AggregateChanged $event);
 }

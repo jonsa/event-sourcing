@@ -8,11 +8,10 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
 
 namespace Prooph\EventSourcing\Aggregate;
 
 interface AggregateTypeProvider
 {
-    public function aggregateType(): AggregateType;
+    public function aggregateType();
 }
